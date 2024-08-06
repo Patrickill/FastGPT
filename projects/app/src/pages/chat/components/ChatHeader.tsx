@@ -38,7 +38,7 @@ const ChatHeader = ({
 }) => {
   const isPlugin = chatData.app.type === AppTypeEnum.plugin;
   const { isPc } = useSystem();
-
+  const { t } = useTranslation();
   return isPc && isPlugin ? null : (
     <Flex
       alignItems={'center'}
@@ -50,7 +50,11 @@ const ChatHeader = ({
     >
       {isPc ? (
         <>
-          <PcHeader title={chatData.title} chatModels={chatData.app.chatModels} history={history} />
+          <PcHeader
+            title={t('chat:new_chat')}
+            chatModels={chatData.app.chatModels}
+            history={history}
+          />
           <Box flex={1} />
         </>
       ) : (

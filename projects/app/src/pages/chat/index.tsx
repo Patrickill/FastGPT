@@ -339,7 +339,7 @@ export async function getServerSideProps(context: any) {
     props: {
       appId: context?.query?.appId || '',
       chatId: context?.query?.chatId || '',
-      ...(await serviceSideProps(context, ['file', 'app']))
+      ...(await serviceSideProps(context, ['file', 'app', 'chat']))
     }
   };
 }
