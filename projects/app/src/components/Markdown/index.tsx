@@ -77,7 +77,7 @@ const Markdown = ({
     );
 
     return finalText;
-  }, [forbidZhFormat, showAnimation, source]);
+  }, [showAnimation, source]);
 
   const urlTransform = useCallback((val: string) => {
     return val;
