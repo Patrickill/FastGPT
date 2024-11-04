@@ -181,7 +181,7 @@ export function form2AppWorkflow(
         },
         {
           ...Input_Template_File_Link_Prompt,
-          value: [[workflowStartNodeId, NodeOutputKeyEnum.userFiles]]
+          value: [workflowStartNodeId, NodeOutputKeyEnum.userFiles]
         },
         {
           key: NodeInputKeyEnum.aiChatVision,
@@ -451,7 +451,7 @@ export function form2AppWorkflow(
             },
             {
               ...Input_Template_File_Link_Prompt,
-              value: [[workflowStartNodeId, NodeOutputKeyEnum.userFiles]]
+              value: [workflowStartNodeId, NodeOutputKeyEnum.userFiles]
             },
             {
               key: 'userChatInput',

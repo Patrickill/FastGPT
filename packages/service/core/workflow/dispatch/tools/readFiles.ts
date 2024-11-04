@@ -112,24 +112,15 @@ export const getFileContentFromLinks = async ({
   teamId: string;
 }) => {
   const parseUrlList = urls
-    // Remove invalid urls
-    .filter((url) => {
-      if (typeof url !== 'string') return false;
-
-      // 检查相对路径
-      const validPrefixList = ['/', 'http', 'ws'];
-      if (validPrefixList.some((prefix) => url.startsWith(prefix))) {
-        return true;
-      }
-
-      return false;
-    })
-    // Just get the document type file
-    .filter((url) => parseUrlToFileType(url)?.type === 'file')
     .map((url) => {
       try {
         // Check is system upload file
         if (url.startsWith('/') || (requestOrigin && url.startsWith(requestOrigin))) {
+          // Parse url, get filename query. Keep only documents that can be parsed
+          if (parseUrlToFileType(url)?.type !== 'file') {
+            return '';
+          }
+
           //  Remove the origin(Make intranet requests directly)
           if (requestOrigin && url.startsWith(requestOrigin)) {
             url = url.replace(requestOrigin, '');

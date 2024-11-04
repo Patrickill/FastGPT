@@ -44,7 +44,6 @@ import { AiChatQuoteRoleType } from '@fastgpt/global/core/workflow/template/syst
 import { getErrText } from '@fastgpt/global/common/error/utils';
 import { getFileContentFromLinks, getHistoryFileLinks } from '../tools/readFiles';
 import { parseUrlToFileType } from '@fastgpt/global/common/file/tools';
-import { i18nT } from '../../../../../web/i18n/utils';
 
 export type ChatProps = ModuleDispatchProps<
   AIChatNodeProps & {
@@ -106,7 +105,7 @@ export const dispatchChatCompletion = async (props: ChatProps): Promise<ChatResp
       quoteTemplate
     }),
     getMultiInput({
-      histories: chatHistories,
+      histories,
       inputFiles,
       fileLinks,
       stringQuoteText,
@@ -115,10 +114,6 @@ export const dispatchChatCompletion = async (props: ChatProps): Promise<ChatResp
       teamId
     })
   ]);
-
-  if (!userChatInput && !documentQuoteText && userFiles.length === 0) {
-    return Promise.reject(i18nT('chat:AI_input_is_empty'));
-  }
 
   const [{ filterMessages }] = await Promise.all([
     getChatMessages({

@@ -64,7 +64,9 @@ const RenderInput = () => {
     fileCtrl
   });
   const isDisabledInput = histories.length > 0;
-
+  const hasFileUploading = useMemo(() => {
+    return fileList.some((item) => !item.url);
+  }, [fileList]);
   useRequest2(uploadFiles, {
     manual: false,
     errorToast: t('common:upload_file_error'),
@@ -78,10 +80,9 @@ const RenderInput = () => {
       setRestartData(e);
       onNewChat?.();
     },
-    [onNewChat, setRestartData]
+    [onNewChat]
   );
 
-  // Get plugin input components
   const formatPluginInputs = useMemo(() => {
     if (histories.length === 0) return pluginInputs;
     try {
@@ -100,12 +101,12 @@ const RenderInput = () => {
   useEffect(() => {
     // Set config default value
     if (histories.length === 0) {
+      // Restart
       if (restartData) {
         reset(restartData);
         setRestartData(undefined);
         return;
       }
-
       const defaultFormValues = formatPluginInputs.reduce(
         (acc, input) => {
           acc[input.key] = input.defaultValue;
@@ -159,8 +160,7 @@ const RenderInput = () => {
       variables: historyVariables,
       files: historyFileList
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [histories]);
+  }, [histories.length]);
 
   const [uploading, setUploading] = useState(false);
 

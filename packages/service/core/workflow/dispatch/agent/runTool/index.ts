@@ -96,7 +96,7 @@ export const dispatchRunTools = async (props: DispatchToolModuleProps): Promise<
 
   const globalFiles = chatValue2RuntimePrompt(query).files;
   const { documentQuoteText, userFiles } = await getMultiInput({
-    histories: chatHistories,
+    histories,
     requestOrigin,
     maxFiles: chatConfig?.fileSelectConfig?.maxFiles || 20,
     teamId,

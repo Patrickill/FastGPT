@@ -458,7 +458,8 @@ const RenderList = React.memo(function RenderList({
             NodeOutputKeyEnum.userChatInput
           ];
           defaultValueMap[NodeInputKeyEnum.fileUrlList] = [
-            [node.nodeId, NodeOutputKeyEnum.userFiles]
+            node.nodeId,
+            NodeOutputKeyEnum.userFiles
           ];
         }
       });

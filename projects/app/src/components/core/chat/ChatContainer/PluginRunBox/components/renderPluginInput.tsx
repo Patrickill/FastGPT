@@ -1,4 +1,15 @@
-import { Box, Button, Flex, Switch, Textarea } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Switch,
+  Textarea
+} from '@chakra-ui/react';
 import { WorkflowIOValueTypeEnum } from '@fastgpt/global/core/workflow/constants';
 import { FlowNodeInputTypeEnum } from '@fastgpt/global/core/workflow/node/constant';
 import { FlowNodeInputItemType } from '@fastgpt/global/core/workflow/type/io';
@@ -16,21 +27,17 @@ import { useRequest2 } from '@fastgpt/web/hooks/useRequest';
 import { useEffect, useMemo } from 'react';
 import EmptyTip from '@fastgpt/web/components/common/EmptyTip';
 import { useFieldArray } from 'react-hook-form';
-import MyNumberInput from '@fastgpt/web/components/common/Input/NumberInput';
-import { isEqual } from 'lodash';
 
 const JsonEditor = dynamic(() => import('@fastgpt/web/components/common/Textarea/JsonEditor'));
 
 const FileSelector = ({
   input,
   setUploading,
-  onChange,
-  value
+  onChange
 }: {
   input: FlowNodeInputItemType;
   setUploading: React.Dispatch<React.SetStateAction<boolean>>;
   onChange: (...event: any[]) => void;
-  value: any;
 }) => {
   const { t } = useTranslation();
   const { variablesForm, histories, chatId, outLinkAuthData } = useContextSelector(
@@ -49,9 +56,7 @@ const FileSelector = ({
     uploadFiles,
     onOpenSelectFile,
     onSelectFile,
-    removeFiles,
-    replaceFiles,
-    hasFileUploading
+    removeFiles
   } = useFileUpload({
     outLinkAuthData,
     chatId: chatId || '',
@@ -63,28 +68,15 @@ const FileSelector = ({
     // @ts-ignore
     fileCtrl
   });
-
-  useEffect(() => {
-    if (!Array.isArray(value)) {
-      replaceFiles([]);
-      return;
-    }
-
-    // compare file names and update if different
-    const valueFileNames = value.map((item) => item.name);
-    const currentFileNames = fileList.map((item) => item.name);
-    if (!isEqual(valueFileNames, currentFileNames)) {
-      replaceFiles(value);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
   const isDisabledInput = histories.length > 0;
   useRequest2(uploadFiles, {
     manual: false,
     errorToast: t('common:upload_file_error'),
     refreshDeps: [fileList, outLinkAuthData, chatId]
   });
+  const hasFileUploading = useMemo(() => {
+    return fileList.some((item) => !item.url);
+  }, [fileList]);
 
   useEffect(() => {
     setUploading(hasFileUploading);
@@ -126,7 +118,7 @@ const FileSelector = ({
       <FilePreview fileList={fileList} removeFiles={isDisabledInput ? undefined : removeFiles} />
       {fileList.length === 0 && <EmptyTip py={0} mt={3} text={t('chat:not_select_file')} />}
 
-      <File onSelect={(files) => onSelectFile({ files })} />
+      <File onSelect={(files) => onSelectFile({ files, fileList })} />
     </>
   );
 };
@@ -159,9 +151,7 @@ const RenderPluginInput = ({
       );
     }
     if (inputType === FlowNodeInputTypeEnum.fileSelect) {
-      return (
-        <FileSelector onChange={onChange} input={input} setUploading={setUploading} value={value} />
-      );
+      return <FileSelector onChange={onChange} input={input} setUploading={setUploading} />;
     }
 
     if (input.valueType === WorkflowIOValueTypeEnum.string) {

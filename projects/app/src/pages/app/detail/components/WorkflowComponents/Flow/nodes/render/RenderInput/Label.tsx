@@ -56,6 +56,18 @@ const InputLabel = ({ nodeId, input }: Props) => {
       {[FlowNodeInputTypeEnum.reference, FlowNodeInputTypeEnum.fileSelect].includes(renderType) && (
         <ValueTypeLabel valueType={valueType} valueDesc={valueDesc} />
       )}
+    return (
+      <Flex className="nodrag" cursor={'default'} alignItems={'center'} position={'relative'}>
+        <Flex alignItems={'center'} position={'relative'} fontWeight={'medium'}>
+          <FormLabel required={required} color={'myGray.600'}>
+            {t(label as any)}
+          </FormLabel>
+          {description && <QuestionTip ml={1} label={t(description as any)}></QuestionTip>}
+        </Flex>
+        {/* value type */}
+        {[FlowNodeInputTypeEnum.reference, FlowNodeInputTypeEnum.fileSelect].includes(
+          renderType
+        ) && <ValueTypeLabel valueType={valueType} valueDesc={valueDesc} />}
 
       {/* input type select */}
       {renderTypeList && renderTypeList.length > 1 && (

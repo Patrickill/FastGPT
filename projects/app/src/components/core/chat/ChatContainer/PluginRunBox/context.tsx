@@ -244,16 +244,10 @@ const PluginRunContextProvider = ({
           controller: chatController.current,
           generatingMessage,
           variables: {
-            files,
-            ...formatVariables
+            files: files,
+            ...variables
           }
         });
-        if (responseData?.[responseData.length - 1]?.error) {
-          toast({
-            title: responseData[responseData.length - 1].error?.message,
-            status: 'error'
-          });
-        }
 
         setHistories((state) =>
           state.map((item, index) => {
