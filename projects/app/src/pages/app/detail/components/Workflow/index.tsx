@@ -14,7 +14,7 @@ import { cloneDeep } from 'lodash';
 import { useTranslation } from 'next-i18next';
 
 import Flow from '../WorkflowComponents/Flow';
-import { ReactFlowCustomProvider } from '../WorkflowComponents/context/index';
+import { ReactFlowProvider } from 'reactflow';
 
 const Logs = dynamic(() => import('../Logs/index'));
 const PublishChannel = dynamic(() => import('../Publish'));
@@ -67,9 +67,11 @@ const WorkflowEdit = () => {
 
 const Render = () => {
   return (
-    <ReactFlowCustomProvider templates={appSystemModuleTemplates}>
-      <WorkflowEdit />
-    </ReactFlowCustomProvider>
+    <ReactFlowProvider>
+      <WorkflowContextProvider basicNodeTemplates={appSystemModuleTemplates}>
+        <WorkflowEdit />
+      </WorkflowContextProvider>
+    </ReactFlowProvider>
   );
 };
 

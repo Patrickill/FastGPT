@@ -262,10 +262,19 @@ const MultipleReferenceSelector = ({
   }, [formatList, onSelect, value]);
 
   const ArraySelector = useMemo(() => {
+    const selectorVal = value as ReferenceItemValueType[];
+    const notValidItem =
+      !selectorVal ||
+      selectorVal.length === 0 ||
+      selectorVal.every((item) => {
+        const [nodeName, outputName] = getSelectValue(item);
+        return !nodeName || !outputName;
+      });
+
     return (
       <MultipleRowArraySelect
         label={
-          formatList.length > 0 ? (
+          !notValidItem ? (
             <Grid py={3} gridTemplateColumns={'1fr 1fr'} gap={2} fontSize={'sm'}>
               {formatList.map(({ nodeName, outputName }, index) => {
                 if (!nodeName || !outputName) return null;

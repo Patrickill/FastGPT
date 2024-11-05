@@ -25,7 +25,16 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { Edge, Node, OnConnectStartParams, ReactFlowProvider, useReactFlow } from 'reactflow';
+import {
+  Edge,
+  EdgeChange,
+  Node,
+  NodeChange,
+  OnConnectStartParams,
+  useEdgesState,
+  useNodesState,
+  useReactFlow
+} from 'reactflow';
 import { createContext, useContextSelector } from 'use-context-selector';
 import { defaultRunningStatus } from '../constants';
 import { checkNodeRunStatus } from '@fastgpt/global/core/workflow/runtime/utils';

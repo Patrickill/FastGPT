@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import { cloneDeep } from 'lodash';
 
 import Flow from '../WorkflowComponents/Flow';
+import { ReactFlowProvider } from 'reactflow';
 import { useTranslation } from 'next-i18next';
 
 const Logs = dynamic(() => import('../Logs/index'));
@@ -66,9 +67,11 @@ const WorkflowEdit = () => {
 
 const Render = () => {
   return (
-    <ReactFlowCustomProvider templates={pluginSystemModuleTemplates}>
-      <WorkflowEdit />
-    </ReactFlowCustomProvider>
+    <ReactFlowProvider>
+      <WorkflowContextProvider basicNodeTemplates={pluginSystemModuleTemplates}>
+        <WorkflowEdit />
+      </WorkflowContextProvider>
+    </ReactFlowProvider>
   );
 };
 

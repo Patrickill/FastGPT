@@ -56,7 +56,9 @@ const FileSelector = ({
     uploadFiles,
     onOpenSelectFile,
     onSelectFile,
-    removeFiles
+    removeFiles,
+    replaceFiles,
+    hasFileUploading
   } = useFileUpload({
     outLinkAuthData,
     chatId: chatId || '',
@@ -74,9 +76,6 @@ const FileSelector = ({
     errorToast: t('common:upload_file_error'),
     refreshDeps: [fileList, outLinkAuthData, chatId]
   });
-  const hasFileUploading = useMemo(() => {
-    return fileList.some((item) => !item.url);
-  }, [fileList]);
 
   useEffect(() => {
     setUploading(hasFileUploading);
@@ -118,7 +117,7 @@ const FileSelector = ({
       <FilePreview fileList={fileList} removeFiles={isDisabledInput ? undefined : removeFiles} />
       {fileList.length === 0 && <EmptyTip py={0} mt={3} text={t('chat:not_select_file')} />}
 
-      <File onSelect={(files) => onSelectFile({ files, fileList })} />
+      <File onSelect={(files) => onSelectFile({ files })} />
     </>
   );
 };

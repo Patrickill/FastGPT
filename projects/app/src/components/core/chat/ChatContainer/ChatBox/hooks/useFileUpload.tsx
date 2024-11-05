@@ -33,8 +33,10 @@ export const useFileUpload = (props: UseFileUploadOptions) => {
     update: updateFiles,
     remove: removeFiles,
     fields: fileList,
-    replace: replaceFiles
+    replace: replaceFiles,
+    append: appendFiles
   } = fileCtrl;
+  const hasFileUploading = fileList.some((item) => !item.url);
 
   const showSelectFile = fileSelectConfig?.canSelectFile;
   const showSelectImg = fileSelectConfig?.canSelectImg;

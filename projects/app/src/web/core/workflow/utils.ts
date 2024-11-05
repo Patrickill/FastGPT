@@ -23,8 +23,8 @@ import {
   formatEditorVariablePickerIcon,
   getAppChatConfig,
   getGuideModule,
-  isValidArrayReferenceValue,
-  isValidReferenceValue
+  isReferenceValue,
+  isReferenceValueArray
 } from '@fastgpt/global/core/workflow/utils';
 import { TFunction } from 'next-i18next';
 import {
@@ -396,14 +396,13 @@ export const checkWorkflowNodeAndConnection = ({
           if (input.value === undefined) return true;
         }
 
-        // Check plugin output
-        // if (
-        //   node.data.flowNodeType === FlowNodeTypeEnum.pluginOutput &&
-        //   (input.value?.length === 0 ||
-        //     (isValidReferenceValue(input.value, nodeIds) && !input.value?.[1]))
-        // ) {
-        //   return true;
-        // }
+        if (
+          node.data.flowNodeType === FlowNodeTypeEnum.pluginOutput &&
+          (input.value?.length === 0 ||
+            (isReferenceValue(input.value, nodeIds) && !input.value?.[1]))
+        ) {
+          return true;
+        }
 
         // check reference invalid
         const renderType = input.renderTypeList[input.selectedTypeIndex || 0];
