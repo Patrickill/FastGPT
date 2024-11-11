@@ -83,6 +83,8 @@ type AuthResponseType = {
   user: UserModelSchema;
   app: AppSchema;
   responseDetail?: boolean;
+  showNodeStatus?: boolean;
+  showCompleteQuote?: boolean;
   authType: `${AuthUserTypeEnum}`;
   apikey?: string;
   canWrite: boolean;
@@ -158,9 +160,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       responseDetail,
       authType,
       sourceName,
+      
+      
+      outLinkUserId = customUid
       apikey,
       canWrite,
-      outLinkUserId = customUid
+      
+      showNodeStatus
     } = await (async () => {
       // share chat
       if (shareId && outLinkUid) {
@@ -256,7 +262,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res,
       detail,
       streamResponse: stream,
-      id: chatId
+      id: chatId,
+      showNodeStatus
     });
 
     /* start flow controller */
@@ -461,7 +468,7 @@ const authShareChat = async ({
   shareId: string;
   chatId?: string;
 }): Promise<AuthResponseType> => {
-  const { teamId, tmbId, user, appId, authType, responseDetail, uid, sourceName } =
+  const { teamId, tmbId, user, appId, authType, responseDetail, showNodeStatus, uid,sourceName } =
     await authOutLinkChatStart(data);
   const app = await MongoApp.findById(appId).lean();
 
@@ -485,7 +492,8 @@ const authShareChat = async ({
     apikey: '',
     authType,
     canWrite: false,
-    outLinkUserId: uid
+    outLinkUserId: uid,
+    showNodeStatus
   };
 };
 const authTeamSpaceChat = async ({
